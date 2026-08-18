@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Université IAI - Tirage de Projets</title>
+    <style>
+        :root {
+            --bleu-iai: #003366;
+            --bleu-clair: #1a4d80;
+            --or-iai: #ffcc00;
+            --blanc: #ffffff;
+            --gris-fond: #f4f6f9;
+            --texte: #222;
+            --ombre: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--gris-fond);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ========== EN-TÊTE ========== */
+        .entete {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+            padding: 20px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--ombre);
+        }
+
+        .logo-titre {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-titre img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--or-iai);
+        }
+
+        .logo-titre h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo-titre .sous-titre {
+            font-size: 0.9rem;
+            color: var(--or-iai);
+            font-weight: bold;
+        }
+
+        .badge-univ {
+            background: var(--or-iai);
+            color: var(--bleu-iai);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* ========== CONTENU PRINCIPAL ========== */
+        .conteneur {
+            flex: 1;
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        /* Section email */
+        .carte-email {
+            background: var(--blanc);
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: var(--ombre);
+            text-align: center;
+            max-width: 500px;
+            margin: 50px auto;
+            border-top: 6px solid var(--or-iai);
+        }
+
+        .carte-email h2 {
+            color: var(--bleu-iai);
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .carte-email p {
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .groupe-champ {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .groupe-champ input {
+            padding: 14px 18px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .groupe-champ input:focus {
+            border-color: var(--bleu-iai);
+            box-shadow: 0 0 0 3px rgba(0,51,102,0.1);
+        }
+
+        .btn {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+            border: none;
+            padding: 14px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: var(--bleu-clair);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .btn-or {
+            background: var(--or-iai);
+            color: var(--bleu-iai);
+        }
+
+        .btn-or:hover {
+            background: #e6b800;
+        }
+
+        /* Section projets (cachée par défaut) */
+        .section-projets {
+            display: none;
+        }
+
+        .en-tete-projets {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .en-tete-projets h2 {
+            color: var(--bleu-iai);
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .en-tete-projets .ligne {
+            width: 100px;
+            height: 4px;
+            background: var(--or-iai);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .info-email {
+            background: var(--blanc);
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .info-email strong {
+            color: var(--bleu-iai);
+        }
+
+        .zone-tirage {
+            background: var(--blanc);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--ombre);
+            text-align: center;
+            margin-bottom: 30px;
+            border-left: 6px solid var(--or-iai);
+        }
+
+        .zone-tirage .btn {
+            margin-top: 10px;
+        }
+
+        .resultat-projet {
+            display: none;
+            margin-top: 25px;
+            background: var(--gris-fond);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: left;
+            border: 1px solid #e0e0e0;
+        }
+
+        .resultat-projet h3 {
+            color: var(--bleu-iai);
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .resultat-projet .description {
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .resultat-projet .technos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .resultat-projet .technos span {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .difficulte {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .liste-projets {
+            background: var(--blanc);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--ombre);
+        }
+
+        .liste-projets h3 {
+            color: var(--bleu-iai);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--or-iai);
+            padding-bottom: 10px;
+        }
+
+        .liste-projets ul {
+            list-style: none;
+        }
+
+        .liste-projets li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .liste-projets li:last-child {
+            border-bottom: none;
+        }
+
+        .liste-projets .titre-projet {
+            font-weight: 600;
+        }
+
+        .liste-projets .niveau {
+            background: #ffebee;
+            color: #c62828;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .btn-deconnexion {
+            background: transparent;
+            color: var(--bleu-iai);
+            border: 2px solid var(--bleu-iai);
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-deconnexion:hover {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+        }
+
+        /* ========== OVERLAY ANIMATION ========== */
+        .overlay-tirage {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: background 0.6s ease, opacity 0.6s ease;
+        }
+
+        .overlay-tirage.active {
+            background: rgba(0, 0, 0, 0.75);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cadeau-box {
+            background: var(--bleu-iai);
+            border-radius: 24px;
+            padding: 40px 50px;
+            text-align: center;
+            color: var(--blanc);
+            box-shadow: 0 0 30px rgba(0, 51, 102, 0.8);
+            transform: scale(0.8);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+            animation: pulsation-lumiere 2s infinite alternate;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .overlay-tirage.active .cadeau-box {
+            transform: scale(1);
+        }
+
+        @keyframes pulsation-lumiere {
+            0% {
+                box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+                filter: brightness(0.8);
+            }
+            100% {
+                box-shadow: 0 0 60px rgba(255, 204, 0, 0.9);
+                filter: brightness(1.3);
+            }
+        }
+
+        .cadeau-box h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--or-iai);
+        }
+
+        .cadeau-box .btn-ouvrir {
+            background: var(--or-iai);
+            color: var(--bleu-iai);
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+
+        .cadeau-box .btn-ouvrir:hover {
+            background: #e6b800;
+            transform: scale(1.05);
+        }
+
+        /* Carte projet (cachée initialement) */
+        .carte-projet {
+            display: none;
+            background: var(--blanc);
+            color: var(--texte);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 20px;
+            text-align: left;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: apparition-carte 0.6s ease forwards;
+        }
+
+        @keyframes apparition-carte {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .carte-projet h3 {
+            color: var(--bleu-iai);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .carte-projet .infos-projet {
+            margin: 15px 0;
+        }
+
+        .carte-projet .infos-projet p {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .carte-projet .technos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .carte-projet .technos span {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .email-confirmation {
+            display: none;
+            margin-top: 20px;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            animation: apparition-carte 0.5s ease forwards;
+        }
+
+        /* ========== PIED DE PAGE ========== */
+        .pied-page {
+            background: var(--bleu-iai);
+            color: var(--blanc);
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+
+        .pied-page .mention {
+            color: var(--or-iai);
+            font-weight: bold;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .entete {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .logo-titre {
+                flex-direction: column;
+            }
+            .carte-email {
+                padding: 30px 20px;
+            }
+            .en-tete-projets h2 {
+                font-size: 1.5rem;
+            }
+            .cadeau-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= EN-TÊTE ================= -->
+    <header class="entete">
+        <div class="logo-titre">
+            <!-- Remplacez le lien de l'image par le logo officiel de l'IAI -->
+            <img src="https://via.placeholder.com/150x150?text=IAI" alt="Logo Université IAI">
+            <div>
+                <h1>Université IAI</h1>
+                <div class="sous-titre">Institut Africain d'Informatique</div>
+            </div>
+        </div>
+        <div class="badge-univ">Campus Numérique</div>
+    </header>
+
+    <!-- ================= CONTENU PRINCIPAL ================= -->
+    <main class="conteneur">
+
+        <!-- ========== SECTION EMAIL (visible au départ) ========== -->
+        <section id="section-email" class="carte-email">
+            <h2>Accès Étudiant</h2>
+            <p>Veuillez saisir votre adresse e-mail universitaire pour accéder aux tirages de projets de développement logiciel.</p>
+            <form id="form-email">
+                <div class="groupe-champ">
+                    <input type="email" id="email" placeholder="prenom.nom@iai-universite.cm" required>
+                </div>
+                <button type="submit" class="btn">Accéder aux tirages</button>
+            </form>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #888;">
+                <em>Réservé aux étudiants de l'Université IAI.</em>
+            </p>
+        </section>
+
+        <!-- ========== SECTION PROJETS (cachée au départ) ========== -->
+        <section id="section-projets" class="section-projets">
+            <div class="en-tete-projets">
+                <h2>🎓 Tirage de Projets de Développement Logiciel</h2>
+                <div class="ligne"></div>
+                <p style="color: #555;">Niveau : <strong style="color:#d32f2f;">Sérieux et extrêmement difficile</strong></p>
+            </div>
+
+            <div class="info-email">
+                Connecté en tant que : <strong id="email-affiche"></strong>
+                <button id="btn-deconnexion" class="btn-deconnexion" style="margin-left: 15px;">Déconnexion</button>
+            </div>
+
+            <!-- Zone de tirage -->
+            <div class="zone-tirage">
+                <h3>🎲 Tirer un projet au hasard</h3>
+                <p style="margin: 10px 0 20px; color: #555;">Cliquez sur le bouton pour obtenir un projet extrêmement difficile.</p>
+                <button id="btn-tirage" class="btn btn-or">Tirer un projet</button>
+
+                <!-- La div resultat-projet n'est plus utilisée pour l'affichage direct, mais on la garde pour compatibilité -->
+                <div id="resultat-projet" class="resultat-projet" style="display: none;"></div>
+            </div>
+
+            <!-- Liste des projets disponibles -->
+            <div class="liste-projets">
+                <h3>📋 Projets disponibles (tous extrêmement difficiles)</h3>
+                <ul id="liste-projets"></ul>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= OVERLAY ANIMATION ================= -->
+    <div id="overlay-tirage" class="overlay-tirage">
+        <div class="cadeau-box">
+            <h2>🎁 Votre Cadeau</h2>
+            <p>Un projet de développement logiciel vous attend</p>
+            <button id="btn-ouvrir-cadeau" class="btn-ouvrir">Ouvrir votre cadeau</button>
+            <!-- La carte projet sera injectée ici -->
+            <div id="carte-projet" class="carte-projet">
+                <div class="difficulte" style="color:#d32f2f; font-weight:bold;">⚠️ Difficulté : Extrême</div>
+                <h3 id="projet-titre"></h3>
+                <div class="infos-projet">
+                    <p><strong>Durée :</strong> <span id="projet-duree"></span></p>
+                    <p><strong>Description :</strong> <span id="projet-description"></span></p>
+                </div>
+                <div class="technos" id="projet-technos"></div>
+            </div>
+            <!-- Confirmation d'envoi d'email -->
+            <div id="email-confirmation" class="email-confirmation">
+                ✅ Un email de félicitations a été envoyé à votre adresse universitaire avec les détails du projet.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PIED DE PAGE ================= -->
+    <footer class="pied-page">
+        <p>© 2026 <span class="mention">Université IAI</span> - Tous droits réservés.</p>
+        <p style="font-size:0.8rem; margin-top:5px;">Projets de développement logiciel avancés - Département Informatique</p>
+    </footer>
+
+    <script>
+        // ================= DONNÉES DES PROJETS =================
+        const projets = [
+            {
+                titre: "Système de gestion de chaîne d'approvisionnement avec IA prédictive et Blockchain",
+                description: "Concevoir une plateforme complète de supply chain intégrant un moteur d'IA pour la prévision de la demande, la détection de fraudes, et une couche blockchain pour la traçabilité immuable des transactions. Le système doit gérer des millions de transactions par jour avec une latence inférieure à 100 ms.",
+                technos: ["Python", "TensorFlow", "Solidity", "PostgreSQL", "Docker", "Kubernetes"],
+                duree: "8 mois"
+            },
+            {
+                titre: "Plateforme d'analyse de données massives en temps réel avec Machine Learning",
+                description: "Développer un pipeline de traitement de flux de données (streaming) capable d'ingérer 1 To/heure, d'appliquer des modèles de machine learning en ligne, et de fournir des visualisations interactives. Le système doit être tolérant aux pannes et distribué.",
+                technos: ["Apache Kafka", "Spark Streaming", "scikit-learn", "Elasticsearch", "React", "GraphQL"],
+                duree: "10 mois"
+            },
+            {
+                titre: "Compilateur optimisé pour langage fonctionnel avec vérification formelle",
+                description: "Implémenter un compilateur pour un langage fonctionnel typé, incluant l'inférence de types, l'optimisation de code (SSA, élimination de code mort, inline) et une vérification formelle des propriétés de sûreté à l'aide d'un assistant de preuve.",
+                technos: ["OCaml", "LLVM", "Coq", "Haskell", "Type Theory"],
+                duree: "12 mois"
+            },
+            {
+                titre: "Système d'exploitation temps réel pour systèmes embarqués critiques",
+                description: "Créer un micro-noyau temps réel avec ordonnancement temps réel dur, gestion de la mémoire protégée, communication inter-processus par passage de messages, et certification DO-178C. Le système doit supporter le multi-cœur et les architectures ARM.",
+                technos: ["C", "Assembleur ARM", "RTOS", "QEMU", "Makefile"],
+                duree: "9 mois"
+            },
+            {
+                titre: "Moteur de recherche distribué avec index inversé et classement sémantique",
+                description: "Développer un moteur de recherche à l'échelle du Web capable d'indexer des milliards de pages, d'utiliser un index inversé distribué, et de classer les résultats par pertinence sémantique via des modèles de langage (BERT).",
+                technos: ["Java", "Apache Lucene", "Hadoop", "PyTorch", "gRPC"],
+                duree: "11 mois"
+            },
+            {
+                titre: "Simulation multi-agents pour la modélisation de trafic urbain intelligent",
+                description: "Construire un simulateur massivement parallèle de trafic urbain, intégrant des agents autonomes (véhicules, piétons), des feux de signalisation adaptatifs, et une optimisation par algorithmes génétiques. Le système doit tourner sur un cluster GPU.",
+                technos: ["C++", "CUDA", "MPI", "Python", "SUMO"],
+                duree: "7 mois"
+            },
+            {
+                titre: "Framework de fédération de données hétérogènes avec respect de la vie privée",
+                description: "Concevoir un framework de fédération de bases de données réparties qui permet d'exécuter des requêtes analytiques sans déplacer les données sensibles, en utilisant le chiffrement homomorphe et le calcul multipartite sécurisé.",
+                technos: ["Python", "PySyft", "Microsoft SEAL", "SQL", "Differential Privacy"],
+                duree: "10 mois"
+            },
+            {
+                titre: "Système de recommandation temps réel pour plateforme e-commerce à très grande échelle",
+                description: "Développer un système de recommandation personnalisée capable de traiter 50 000 requêtes/seconde, avec apprentissage par renforcement pour l'optimisation des clics, et déploiement continu des modèles.",
+                technos: ["Scala", "Apache Flink", "TensorFlow Serving", "Redis", "Kafka"],
+                duree: "8 mois"
+            },
+            {
+                titre: "Générateur de code source automatique avec modèles de langage avancés",
+                description: "Créer un outil qui, à partir d'une spécification en langage naturel, génère du code source compilable et des tests unitaires, en s'appuyant sur des modèles de type GPT ou Codex. Le système doit garantir la correction syntaxique et sémantique.",
+                technos: ["Python", "Transformers", "PyTorch", "JavaParser", "Docker"],
+                duree: "6 mois"
+            },
+            {
+                titre: "Plateforme de vote électronique vérifiable de bout en bout",
+                description: "Implémenter un système de vote en ligne avec chiffrement, preuves à divulgation nulle de connaissance, bulletin de vote vérifiable individuellement et collectivement, et audit public. Le système doit résister aux attaques par canal auxiliaire.",
+                technos: ["Rust", "Cryptographie", "ZK-SNARKs", "Blockchain", "WebAssembly"],
+                duree: "9 mois"
+            }
+        ];
+
+        // ================= LOGIQUE =================
+        const sectionEmail = document.getElementById('section-email');
+        const sectionProjets = document.getElementById('section-projets');
+        const formEmail = document.getElementById('form-email');
+        const emailInput = document.getElementById('email');
+        const emailAffiche = document.getElementById('email-affiche');
+        const btnDeconnexion = document.getElementById('btn-deconnexion');
+        const btnTirage = document.getElementById('btn-tirage');
+        const overlay = document.getElementById('overlay-tirage');
+        const btnOuvrirCadeau = document.getElementById('btn-ouvrir-cadeau');
+        const carteProjet = document.getElementById('carte-projet');
+        const projetTitre = document.getElementById('projet-titre');
+        const projetDuree = document.getElementById('projet-duree');
+        const projetDescription = document.getElementById('projet-description');
+        const projetTechnos = document.getElementById('projet-technos');
+        const emailConfirmation = document.getElementById('email-confirmation');
+        const listeProjets = document.getElementById('liste-projets');
+
+        let projetSelectionne = null; // Stocke le projet tiré
+
+        // Vérifier si un email est déjà enregistré
+        const emailEnregistre = localStorage.getItem('iai_user_email');
+        if (emailEnregistre) {
+            afficherProjets(emailEnregistre);
+        }
+
+        // Soumission du formulaire email
+        formEmail.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            if (email && email.includes('@')) {
+                localStorage.setItem('iai_user_email', email);
+                afficherProjets(email);
+            } else {
+                alert('Veuillez saisir une adresse e-mail valide.');
+            }
+        });
+
+        // Déconnexion
+        btnDeconnexion.addEventListener('click', function() {
+            localStorage.removeItem('iai_user_email');
+            sectionProjets.style.display = 'none';
+            sectionEmail.style.display = 'block';
+            emailInput.value = '';
+            // Réinitialiser l'overlay
+            fermerOverlay();
+        });
+
+        // Fonction pour afficher la section projets
+        function afficherProjets(email) {
+            sectionEmail.style.display = 'none';
+            sectionProjets.style.display = 'block';
+            emailAffiche.textContent = email;
+            afficherListeProjets();
+        }
+
+        // Afficher la liste complète des projets
+        function afficherListeProjets() {
+            listeProjets.innerHTML = '';
+            projets.forEach(projet => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span class="titre-projet">${projet.titre}</span>
+                    <span class="niveau">Extrême</span>
+                `;
+                listeProjets.appendChild(li);
+            });
+        }
+
+        // Fonction pour fermer l'overlay et réinitialiser
+        function fermerOverlay() {
+            overlay.classList.remove('active');
+            carteProjet.style.display = 'none';
+            emailConfirmation.style.display = 'none';
+            btnOuvrirCadeau.style.display = 'block';
+            projetSelectionne = null;
+        }
+
+        // Tirage d'un projet : active l'animation overlay
+        btnTirage.addEventListener('click', function() {
+            // Choisir un projet aléatoire
+            const indexAleatoire = Math.floor(Math.random() * projets.length);
+            projetSelectionne = projets[indexAleatoire];
+
+            // Réinitialiser l'overlay avant de l'afficher
+            carteProjet.style.display = 'none';
+            emailConfirmation.style.display = 'none';
+            btnOuvrirCadeau.style.display = 'block';
+
+            // Activer l'overlay (assombrissement progressif)
+            overlay.classList.add('active');
+        });
+
+        // Ouverture du cadeau : affiche la carte projet
+        btnOuvrirCadeau.addEventListener('click', function() {
+            if (projetSelectionne) {
+                // Remplir les informations du projet
+                projetTitre.textContent = projetSelectionne.titre;
+                projetDuree.textContent = projetSelectionne.duree;
+                projetDescription.textContent = projetSelectionne.description;
+                projetTechnos.innerHTML = '';
+                projetSelectionne.technos.forEach(techno => {
+                    const span = document.createElement('span');
+                    span.textContent = techno;
+                    projetTechnos.appendChild(span);
+                });
+
+                // Masquer le bouton d'ouverture et afficher la carte
+                btnOuvrirCadeau.style.display = 'none';
+                carteProjet.style.display = 'block';
+
+                // Simuler l'envoi d'email après un court délai
+                setTimeout(() => {
+                    emailConfirmation.style.display = 'block';
+                }, 1000);
+            }
+        });
+
+        // Fermer l'overlay si on clique en dehors de la boîte (optionnel)
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                fermerOverlay();
+            }
+        });
+    </script>
+</body>
+</html>
